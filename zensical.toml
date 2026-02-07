@@ -1,0 +1,165 @@
+[project]
+
+site_name = "Tutor Tools"
+
+site_description = "Обучающие и методические материалы для репетитора по математике и программированию. Миниприложения обучающего характера, справочные материалы, тесты"
+site_author = "Dea"
+repo_url = "https://github.com/phidel/TutorTools"
+
+# The site_url is the canonical URL for your site. Для офлайна можно не указывать
+#site_url = "https://www.example.com/"
+
+copyright = """Copyright &copy; 2026 Dea"""
+
+# Zensical supports both implicit navigation and explicitly defined navigation.
+# Read more: https://zensical.org/docs/setup/navigation/
+# nav = [
+#   { "Get started" = "index.md" },
+#   { "Markdown in 5min" = "markdown.md" },
+# ]
+
+# The path provided should be relative to the "docs_dir".
+extra_css = [
+    "css/extra.css",
+    "https://unpkg.com/katex@0/dist/katex.min.css"
+  ]
+extra_javascript = [
+    "https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js",
+    "js/tablesort.js",
+    "js/katex.js",
+    "https://unpkg.com/katex@0/dist/katex.min.js",
+    "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"
+  ]
+
+[project.theme]
+
+custom_dir = "overrides"
+
+favicon = "images/favicon.png"
+language = "ru"
+
+# Фичи
+features = [
+    # кнопка закрытия анонса
+    "announce.dismiss",
+
+    # If you have a repository configured - добавит кнопку редактирования
+    # https://zensical.org/docs/setup/repository/#code-actions
+    "content.action.edit",
+
+    # If you have a repository configured - добавит кнопку просмотра
+    # https://zensical.org/docs/setup/repository/#code-actions
+    "content.action.view",
+
+    # https://zensical.org/docs/authoring/code-blocks/#code-annotations
+    "content.code.annotate",
+    "content.code.copy",
+    "content.code.select",
+
+    # https://zensical.org/docs/authoring/footnotes/#footnote-tooltips
+    "content.footnote.tooltips",
+
+    # https://zensical.org/docs/authoring/content-tabs/#linked-content-tabs
+    "content.tabs.link",
+
+    # https://zensical.org/docs/authoring/tooltips/#improved-tooltips
+    "content.tooltips",
+
+    # expand all collapsible sections in the navigation sidebar by default.
+    # "navigation.expand",
+
+    # навигация вперед назад в футере
+    # https://zensical.org/docs/setup/footer/#navigation
+    "navigation.footer",
+
+    # When section index pages are enabled, documents can be directly attached
+    # to sections, which is particularly useful for providing overview pages.
+    # https://zensical.org/docs/setup/navigation/#section-index-pages
+    "navigation.indexes",
+
+    "navigation.instant",
+    "navigation.instant.prefetch",
+    #"navigation.instant.progress",
+
+    # breadcrumb navigation is rendered
+    "navigation.path",
+
+    # When pruning is enabled, only the visible navigation items are included
+    # in the rendered HTML, reducing the size of the built site by 33% or more.
+    # https://zensical.org/docs/setup/navigation/#navigation-pruning
+    #"navigation.prune",
+
+    # When sections are enabled, top-level sections are rendered as groups in
+    # the sidebar for viewports above 1220px, but remain as-is on mobile.
+    "navigation.sections",
+
+    # When tabs are enabled, top-level sections are rendered in a menu layer
+    # below the header for viewports above 1220px, but remain as-is on mobile.
+    # https://zensical.org/docs/setup/navigation/#navigation-tabs
+    # "navigation.tabs",
+    # "navigation.tabs.sticky",
+
+    # Кнопка back-to-top - скроллинг наверх
+    # "navigation.top",
+
+    # URL in the address bar is automatically updated with the active anchor as highlighted in the table of contents.
+    "navigation.tracking",
+
+    # подсветка вхождений поиска
+    # https://zensical.org/docs/setup/search/#search-highlighting
+    "search.highlight",
+
+    # When anchor following for the table of contents is enabled, the sidebar
+    # is automatically scrolled so that the active anchor is always visible.
+    # https://zensical.org/docs/setup/navigation/#anchor-following
+    # "toc.follow",
+
+    # When navigation integration for the table of contents is enabled, it is
+    # always rendered as part of the navigation sidebar on the left.
+    # "toc.integrate",
+]
+
+
+# ----------------------------------------------------------------------------
+# цветовые схемы
+# https://zensical.org/docs/setup/colors/
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+# primary = "amber"   # тоже неплохо для светлой темы
+# accent = "orange"
+primary = "blue"
+accent = "light blue"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "amber"
+accent = "orange"
+toggle.icon = "lucide/moon-star"
+toggle.name = "Switch to system preference"
+
+
+# ----------------------------------------------------------------------------
+# шрифты Google Fonts
+[project.theme.font]
+text = "Inter"
+code = "Iosevka"
+
+# ----------------------------------------------------------------------------
+# You can configure your own logo to be shown in the header using the "logo"
+# option in the "icons" subsection. The logo can be a path to a file in your
+# "docs_dir" or it can be a path to an icon.
+#
+# Likewise, you can customize the logo used for the repository section of the
+# header. Zensical derives the default logo for this from the repository URL.
+# There are other icons you can customize. See the documentation for details.
+# - https://zensical.org/docs/setup/logo-and-icons
+# - https://zensical.org/docs/authoring/icons-emojis/#search
+# ----------------------------------------------------------------------------
+#[project.theme.icon]
+#logo = "lucide/smile"
+#repo = "lucide/smile"
+

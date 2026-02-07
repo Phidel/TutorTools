@@ -1,0 +1,24 @@
+.md-typeset,  .admonition {
+  font-size: 1.1rem;
+}
+.md-typeset code {
+  font-size: 1.05rem; 
+}
+.md-nav {
+  font-size: 0.95rem;       /* меню */
+}
+.md-typeset details, .admonition, .md-typeset table {
+  font-size: 1.03rem !important;
+  line-height: 1.3rem;
+}
+
+.md-typeset table {
+  font-size: 1.1rem !important;
+}
+
+/* Чтобы активный пункт тоже был крупнее */
+.md-nav__link--active {
+  font-size: 0.94rem;
+  font-weight: 500;         /* можно чуть пожирнее сделать */
+  border-left: solid 6px skyblue;
+}
