@@ -5,6 +5,7 @@ site_name = "Tutor Tools"
 site_description = "Обучающие и методические материалы для репетитора по математике и программированию. Миниприложения обучающего характера, справочные материалы, тесты"
 site_author = "Dea"
 repo_url = "https://github.com/phidel/TutorTools"
+edit_uri = "edit/main/docs/"
 
 # The site_url is the canonical URL for your site. Для офлайна можно не указывать
 #site_url = "https://www.example.com/"
@@ -159,7 +160,9 @@ code = "Iosevka"
 # - https://zensical.org/docs/setup/logo-and-icons
 # - https://zensical.org/docs/authoring/icons-emojis/#search
 # ----------------------------------------------------------------------------
-#[project.theme.icon]
+[project.theme.icon]
 #logo = "lucide/smile"
 #repo = "lucide/smile"
+edit = "material/pencil"
+view = "material/eye"
 
