@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Числовой Детектив 2.1</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; width: 380px; }
+        
+        #target-number { font-size: 5rem; font-weight: 800; color: #4834d4; margin: 10px 0; transition: transform 0.2s; }
+        .target-anim { transform: scale(1.1); }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+        
+        button.num-btn { 
+            padding: 20px 0; font-size: 1.5rem; border: 2px solid #edeff2; border-radius: 12px; 
+            background: #f8f9fa; cursor: pointer; transition: all 0.1s; font-weight: bold; color: #555;
+            outline: none; -webkit-tap-highlight-color: transparent;
+        }
+        button.num-btn:active { transform: translateY(2px); background: #e2e4e7; }
+        button.num-btn.selected { background-color: #4834d4; color: white; border-color: #341f97; }
+        
+        #message { height: 30px; font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; color: #666; }
+        
+        .stats { display: flex; justify-content: space-between; margin-top: 20px; font-size: 1rem; font-weight: bold; background: #eee; padding: 10px; border-radius: 10px; }
+        .timer { color: #eb4d4b; }
+        .best { color: #2ecc71; margin-top: 10px; font-size: 0.9rem; }
+        
+        .controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        button.action-btn { background: #636e72; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .restart-btn { background: #27ae60 !important; display: none; }
+        .return{ margin-top:15px; font-size:14px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="message">Разложи число на множители</div>
+        <div id="target-number">?</div>
+        
+        <div class="grid" id="button-grid"></div>
+
+        <div class="stats">
+            <div>Счёт: <span id="score-val">0</span></div>
+            <div class="timer">Время: <span id="timer-val">30</span>с</div>
+        </div>
+        <div class="best">Лучший результат: <span id="best-val">0</span></div>
+
+        <div class="controls">
+            <button id="skip-btn" class="action-btn" onclick="nextQuestion(true)">Пропустить</button>
+            <button id="restart-btn" class="action-btn restart-btn" onclick="startGame()">Играть снова</button>
+        </div>
+    <div class=return><a href="javascript:history.back();">Вернуться на сайт</a> </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('button-grid');
+        const targetEl = document.getElementById('target-number');
+        const messageEl = document.getElementById('message');
+        const scoreEl = document.getElementById('score-val');
+        const timerEl = document.getElementById('timer-val');
+        const bestEl = document.getElementById('best-val');
+        const restartBtn = document.getElementById('restart-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        
+        let selectedNumbers = [];
+        let targetValue = 0;
+        let lastTargetValue = 0; // Для проверки повторов
+        let score = 0;
+        let timeLeft = 30;
+        let timerInterval;
+
+        // Загрузка рекорда
+        bestEl.innerText = localStorage.getItem('math_record') || 0;
+
+        // Создание кнопок 2-9
+        function createButtons() {
+            grid.innerHTML = '';
+            for (let i = 2; i <= 9; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'num-btn';
+                btn.innerText = i;
+                btn.onclick = () => handleSelect(i, btn);
+                grid.appendChild(btn);
+            }
+        }
+
+        function startGame() {
+            score = 0;
+            timeLeft = 30;
+            scoreEl.innerText = score;
+            timerEl.innerText = timeLeft;
+            grid.style.pointerEvents = "auto";
+            restartBtn.style.display = "none";
+            skipBtn.style.display = "inline-block";
+            createButtons();
+            nextQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if (timeLeft <= 0) endGame();
+            }, 1000);
+        }
+
+        function nextQuestion(isSkip = false) {
+            let a, b, newVal;
+            
+            // Генерируем число, пока оно совпадает с предыдущим
+            do {
+                a = Math.floor(Math.random() * 8) + 2;
+                b = Math.floor(Math.random() * 8) + 2;
+                newVal = a * b;
+            } while (newVal === lastTargetValue);
+
+            lastTargetValue = newVal;
+            targetValue = newVal;
+            
+            targetEl.innerText = targetValue;
+            targetEl.classList.add('target-anim');
+            setTimeout(() => targetEl.classList.remove('target-anim'), 200);
+
+            selectedNumbers = [];
+            messageEl.innerText = isSkip ? "Пропущено. Новое число:" : "Выберите два множителя";
+            messageEl.style.color = "#666";
+            resetButtons();
+        }
+
+        function handleSelect(num, btn) {
+            if (selectedNumbers.length < 2) {
+                selectedNumbers.push(num);
+                btn.classList.add('selected');
+
+                if (selectedNumbers.length === 2) {
+                    checkAnswer();
+                }
+            }
+        }
+
+        function checkAnswer() {
+            const product = selectedNumbers[0] * selectedNumbers[1];
+            
+            if (product === targetValue) {
+                messageEl.innerText = "Верно! +5 сек";
+                messageEl.style.color = "#27ae60";
+                score++;
+                scoreEl.innerText = score;
+                timeLeft += 5; 
+                setTimeout(() => nextQuestion(), 500);
+            } else {
+                messageEl.innerText = "Ошибка! Попробуй еще";
+                messageEl.style.color = "#eb4d4b";
+                setTimeout(() => {
+                    selectedNumbers = [];
+                    resetButtons();
+                }, 600);
+            }
+        }
+
+        function resetButtons() {
+            Array.from(grid.children).forEach(btn => btn.classList.remove('selected'));
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            targetEl.innerText = "⌛";
+            messageEl.innerText = `Финиш! Ваш счёт: ${score}`;
+            messageEl.style.color = "#4834d4";
+            grid.style.pointerEvents = "none";
+            restartBtn.style.display = "inline-block";
+            skipBtn.style.display = "none";
+
+            const record = localStorage.getItem('math_record') || 0;
+            if (score > record) {
+                localStorage.setItem('math_record', score);
+                bestEl.innerText = score;
+                messageEl.innerText = `Новый рекорд: ${score}! 🎉`;
+            }
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

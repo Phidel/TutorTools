@@ -37,6 +37,7 @@ extra_javascript = [
 custom_dir = "overrides"
 
 favicon = "images/favicon.png"
+logo = "images/logo.png"
 language = "ru"
 
 # Фичи
@@ -80,7 +81,7 @@ features = [
 
     "navigation.instant",
     "navigation.instant.prefetch",
-    #"navigation.instant.progress",
+    "navigation.instant.progress",
 
     # breadcrumb navigation is rendered
     "navigation.path",
@@ -143,25 +144,13 @@ toggle.icon = "lucide/moon-star"
 toggle.name = "Switch to system preference"
 
 
-# ----------------------------------------------------------------------------
 # шрифты Google Fonts
 [project.theme.font]
 text = "Inter"
 code = "Iosevka"
 
-# ----------------------------------------------------------------------------
-# You can configure your own logo to be shown in the header using the "logo"
-# option in the "icons" subsection. The logo can be a path to a file in your
-# "docs_dir" or it can be a path to an icon.
-#
-# Likewise, you can customize the logo used for the repository section of the
-# header. Zensical derives the default logo for this from the repository URL.
-# There are other icons you can customize. See the documentation for details.
-# - https://zensical.org/docs/setup/logo-and-icons
 # - https://zensical.org/docs/authoring/icons-emojis/#search
-# ----------------------------------------------------------------------------
 [project.theme.icon]
-#logo = "lucide/smile"
 #repo = "lucide/smile"
 edit = "material/pencil"
 view = "material/eye"

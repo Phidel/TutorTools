@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Таблица умножения</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f0f4ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.game{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.example{
+    font-size:60px;
+    margin:15px 0;
+    animation: fadeIn 0.4s;
+}
+
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+button{
+    padding:10px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#4c6ef5;
+    color:white;
+    cursor:pointer;
+    transition:transform 0.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.correct{
+    animation: jump 0.4s;
+    background:#37b24d !important;
+}
+
+.wrong{
+    animation: shake 0.3s;
+    background:#f03e3e !important;
+}
+
+.info{
+    margin-top:15px;
+    font-size:18px;
+}
+
+.return{
+    margin-top:15px;
+    font-size:14px;
+}
+
+.timePlus{
+    animation: glow 0.5s;
+    color:#2f9e44;
+}
+
+.end{
+    font-size:22px;
+    color:#d6336c;
+}
+
+/* АНИМАЦИИ */
+
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(0.8);}
+    to{opacity:1; transform:scale(1);}
+}
+
+@keyframes jump{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.3);}
+    100%{transform:scale(1);}
+}
+
+@keyframes shake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    75%{transform:translateX(-5px);}
+    100%{transform:translateX(0);}
+}
+
+@keyframes glow{
+    from{color:#2f9e44;}
+    to{color:black;}
+}
+</style>
+</head>
+<body>
+
+<div class="game">
+    <h2>Таблица умножения</h2>
+
+    <div class="example" id="example"></div>
+
+    <div class="buttons">
+        <button onclick="checkAnswer(0)" id="btn0"></button>
+        <button onclick="checkAnswer(1)" id="btn1"></button>
+        <button onclick="checkAnswer(2)" id="btn2"></button>
+    </div>
+
+    <div class="info">
+        ⏱ Время: <span id="time">20</span> сек<br>
+        ⭐ Баллы: <span id="score">0</span>
+    </div>
+
+    <div class="end" id="endText"></div>
+
+    <div class=return><a href="javascript:history.back();">Вернуться на сайт</a> </div>
+</div>
+
+<script>
+let time = 20;
+let score = 0;
+
+let a, b, correct;
+let lastExample = "";
+
+const exampleEl = document.getElementById("example");
+const timeEl = document.getElementById("time");
+const scoreEl = document.getElementById("score");
+const endText = document.getElementById("endText");
+
+const buttons = [
+    document.getElementById("btn0"),
+    document.getElementById("btn1"),
+    document.getElementById("btn2")
+];
+
+function random(min, max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function newExample(){
+    let current;
+
+    do{
+        a = random(2,9);
+        b = random(2,9);
+        current = a + "x" + b;
+    }while(current === lastExample);
+
+    lastExample = current;
+
+    correct = a * b;
+    exampleEl.textContent = `${a} × ${b} = ?`;
+
+    exampleEl.style.animation = "none";
+    exampleEl.offsetHeight;
+    exampleEl.style.animation = "fadeIn 0.4s";
+
+    let answers = [correct];
+
+    while(answers.length < 3){
+        let fake = correct + random(-10,10);
+        if(fake > 0 && !answers.includes(fake)){
+            answers.push(fake);
+        }
+    }
+
+    answers.sort(() => Math.random() - 0.5);
+
+    for(let i=0;i<3;i++){
+        buttons[i].textContent = answers[i];
+        buttons[i].className = "";
+    }
+}
+
+function checkAnswer(index){
+    if(time <= 0) return;
+
+    let btn = buttons[index];
+    let value = Number(btn.textContent);
+
+    if(value === correct){
+        score++;
+        time += 4;
+
+        scoreEl.textContent = score;
+        timeEl.textContent = time;
+
+        btn.classList.add("correct");
+        timeEl.classList.add("timePlus");
+
+        setTimeout(()=>{
+            timeEl.classList.remove("timePlus");
+        },500);
+
+    }else{
+        btn.classList.add("wrong");
+    }
+
+    setTimeout(newExample,300);
+}
+
+function timer(){
+    if(time > 0){
+        time--;
+        timeEl.textContent = time;
+    }else{
+        exampleEl.textContent = "";
+        endText.textContent = "Игра окончена!";
+        buttons.forEach(b => b.disabled = true);
+    }
+}
+
+newExample();
+setInterval(timer,1000);
+</script>
+
+
+</body>
+</html>
